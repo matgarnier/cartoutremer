@@ -1,0 +1,20 @@
+Package: cartoutremer
+Title: Faliciter la cartographie les territoires de la France d'outre-mer
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "URD",
+           family = "ARCEP",
+           role = c("aut", "cre"),
+           email = "URD@arcep.fr")
+Description: Fonctions R et template QGIS.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Depends: 
+    R (>= 2.10)
+Imports: 
+    dplyr,
+    sf,
+    maptools
