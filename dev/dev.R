@@ -27,8 +27,17 @@ usethis::use_package("sf")
 usethis::use_package("maptools")
 usethis::use_package("rlang")
 
+
+# tests unitaires
+usethis::use_testthat()
+usethis::use_test("transfo_om")
+
 # check
+
 devtools::check()
+devtools::build()
+# màj namespace
+devtools::document()
 
 # git
 use_git()

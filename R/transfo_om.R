@@ -21,13 +21,12 @@
 
 transfo_om <- function(shape_origine, var_departement, type_transfo){
 
-  # shape_origine <- DEP_GEO_971
-  # type_rappDROM <- "v3"
-  # var_departement <- "971"
+  # controle de la classe du dataframe en entrée
+  if (!class(shape_origine) %in% "data.frame") { stop("L'objet en entrée doit être de classe 'data.frame'") }
+  if (!class(shape_origine) %in% "sf") { stop("L'objet en entrée doit être de classe 'sf'") }
 
-  # vérification de la géometrie
-
-  # st_crs(shape_origine)$input
+  # controle du dataframe en entrée non vide
+  if (nrow(shape_origine) == 0) { stop("L'objet en entrée ne doit pas être vide") }
 
   # nom de la colonne géometrie
   nom_col_geom <- attr(shape_origine, "sf_column")
@@ -115,7 +114,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo){
                              if(exists("shape_973")) shape_973,
                              if(exists("shape_974")) shape_974,
                              if(exists("shape_976")) shape_976) %>%
-    rename(!!sym(nom_col_geom) == geometry) %>%
+    rename(!!(nom_col_geom) := geometry) %>%
     identity()
 
 
