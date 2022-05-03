@@ -1,4 +1,22 @@
-
+#' @name transfo_om
+#'
+#' @title Transformer un territoire de France d'Outre-Mer pour le placer près de la France métropolitaine.
+#'
+#' @description Modifie le champ géometrie du sf dataframe en entrée.
+#'
+#' @param shape_origine Table géographique (format sf dataframe) en entrée contenant les entités du territoire de France d'Outre-Mer.
+#' @param var_departement Nom du champ de la table géographique en entrée contenant le code du département de France d'Outre-Mer.
+#' @param type_transfo Version de la transformation à appliquer.
+#'
+#' @return Renvoie une table géographique (format sf dataframe) contenant les entités du territoire de France d'Outre-Mer replacés.
+#'
+#' @importFrom dplyr filter rename
+#' @importFrom rlang sym
+#' @importFrom sf st_transform st_as_sf st_set_crs
+#' @importFrom maptools elide
+#'
+#'
+#' @export
 
 
 transfo_om <- function(shape_origine, var_departement, type_transfo){

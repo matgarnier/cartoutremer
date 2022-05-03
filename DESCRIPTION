@@ -17,4 +17,5 @@ Depends:
 Imports: 
     dplyr,
     sf,
-    maptools
+    maptools,
+    rlang

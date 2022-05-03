@@ -25,6 +25,7 @@ use_r("transfo_om")
 usethis::use_package("dplyr")
 usethis::use_package("sf")
 usethis::use_package("maptools")
+usethis::use_package("rlang")
 
 # check
 devtools::check()
