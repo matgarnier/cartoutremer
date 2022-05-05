@@ -22,10 +22,10 @@ usethis::use_data_raw( name = "parametres_transfo_geom", open = TRUE )
 use_r("transfo_om")
 
 # dependences
-usethis::use_package("dplyr")
-usethis::use_package("sf")
-usethis::use_package("maptools")
-usethis::use_package("rlang")
+usethis::use_package("dplyr", type = "Depends")
+usethis::use_package("sf", type = "Depends")
+usethis::use_package("maptools", type = "Depends")
+usethis::use_package("rlang", type = "Depends")
 
 
 # tests unitaires

@@ -22,8 +22,8 @@
 transfo_om <- function(shape_origine, var_departement, type_transfo){
 
   # controle de la classe du dataframe en entrée
-  if (!class(shape_origine) %in% "data.frame") { stop("L'objet en entrée doit être de classe 'data.frame'") }
-  if (!class(shape_origine) %in% "sf") { stop("L'objet en entrée doit être de classe 'sf'") }
+  if (is(shape_origine,"data.frame")==F) { stop("L'objet en entrée doit être de classe 'data.frame'") }
+  if (is(shape_origine,"sf")==F) { stop("L'objet en entrée doit être de classe 'sf'") }
 
   # controle du dataframe en entrée non vide
   if (nrow(shape_origine) == 0) { stop("L'objet en entrée ne doit pas être vide") }
