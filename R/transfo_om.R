@@ -28,6 +28,13 @@ transfo_om <- function(shape_origine, var_departement, type_transfo){
   # controle du dataframe en entrée non vide
   if (nrow(shape_origine) == 0) { stop("L'objet en entrée ne doit pas être vide") }
 
+  # controle de la présence du champ département
+  if ("var_departement" %in% colnames(shape_origine)) { stop("Le champ 'var_departement' de l'objet en entrée doit être renseigné") }
+  if (!(!!sym(var_departement) %in% c("971","972","973","974","975", "976", "977", "978"))) { stop("Les codes de départements renseignés doivent être compris dans la liste suivante : {971,972,973,974,975,976,977,978} ") }
+
+  # code departement converti en caractère
+  !!sym(var_departement) %>% as.character()
+
   # nom de la colonne géometrie
   nom_col_geom <- attr(shape_origine, "sf_column")
 
