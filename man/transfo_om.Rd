@@ -7,15 +7,40 @@
 transfo_om(shape_origine, var_departement, type_transfo)
 }
 \arguments{
-\item{shape_origine}{Table géographique (format sf dataframe) en entrée contenant les entités du territoire de France d'Outre-Mer.}
+\item{shape_origine}{Table géographique (classe sf dataframe) en entrée contenant les entités du territoire de France d'Outre-Mer. Les géométries de ces entités peuvent être de type point, ligne ou polygone.}
 
 \item{var_departement}{Nom du champ de la table géographique en entrée contenant le code du département de France d'Outre-Mer.}
 
-\item{type_transfo}{Version de la transformation à appliquer.}
+\item{type_transfo}{Version de la transformation à appliquer (une seule disponible pour l'instant : 'v1').}
 }
 \value{
-Renvoie une table géographique (format sf dataframe) contenant les entités du territoire de France d'Outre-Mer replacés.
+Renvoie une table géographique (classe sf dataframe) contenant les entités du territoire de France d'Outre-Mer replacés.
 }
 \description{
-Modifie le champ géometrie du sf dataframe en entrée.
+Modifie le champ géométrie du sf dataframe en entrée.
+}
+\details{
+Les millésimes du COG disponibles sont les suivants : 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019. \cr
+
+Les codes de départements renseignés dans le champ 'var_departement' doivent être compris dans la liste suivante :
+\itemize{
+\item{'971' (Guadeloupe)}
+\item{'972' (Martinique)}
+\item{'973' (Guyane)}
+\item{'974' (La Réunion)}
+\item{'975' (St-Pierre-et-Miquelon)}
+\item{'976' (Mayotte)}
+\item{'977' (Saint-Barthélémy)}
+\item{'978' (Saint-Martin)}}
+}
+\examples{
+\dontrun{
+# Transformer la gÃ©omÃ©trie des communes d'un territoire d'Outre-Mer pour les afficher proche de la France mÃ©tropolitaine
+indics_migres_DEP <-
+COMM_DROM.proches <-
+transfo_om(shape_origine = COMM_DROM,
+           var_departement = "INSEE_DEP",
+           type_transfo = "v1")
+}
+
 }
