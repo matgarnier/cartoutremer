@@ -20,8 +20,6 @@ Renvoie une table géographique (classe sf dataframe) contenant les entités du 
 Modifie le champ géométrie du sf dataframe en entrée.
 }
 \details{
-Les millésimes du COG disponibles sont les suivants : 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019. \cr
-
 Les codes de départements renseignés dans le champ 'var_departement' doivent être compris dans la liste suivante :
 \itemize{
 \item{'971' (Guadeloupe)}
@@ -34,9 +32,9 @@ Les codes de départements renseignés dans le champ 'var_departement' doivent �
 \item{'978' (Saint-Martin)}}
 }
 \examples{
-\dontrun{
+
 # Transformer la gÃ©omÃ©trie des communes d'un territoire d'Outre-Mer pour les afficher proche de la France mÃ©tropolitaine
-indics_migres_DEP <-
+\dontrun{
 COMM_DROM.proches <-
 transfo_om(shape_origine = COMM_DROM,
            var_departement = "INSEE_DEP",

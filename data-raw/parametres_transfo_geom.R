@@ -2,7 +2,7 @@
 
 library(tibble)
 
-param_transfo_OM <- tribble(
+param_transfo_om <- tribble(
   ~ DEP, ~ rotation,  ~ echelle,  ~ shift_x, ~ shift_y, ~type_rapp,
   "971",  0, 120000, 45000,6500000, "v1",
   "972",  0, 90000, 205000,6500000, "v1",
@@ -15,4 +15,4 @@ param_transfo_OM <- tribble(
 )
 
 # export
-usethis::use_data(param_transfo_OM, overwrite = TRUE)
+usethis::use_data(param_transfo_om, overwrite = TRUE)

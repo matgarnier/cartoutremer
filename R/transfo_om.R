@@ -16,9 +16,9 @@
 #' @importFrom maptools elide
 #'
 #' @examples
-#' \dontrun{
+#'
 #' # Transformer la géométrie des communes d'un territoire d'Outre-Mer pour les afficher proche de la France métropolitaine
-#' indics_migres_DEP <-
+#'\dontrun{
 #' COMM_DROM.proches <-
 #' transfo_om(shape_origine = COMM_DROM,
 #'            var_departement = "INSEE_DEP",
@@ -26,7 +26,6 @@
 #'}
 #'
 #' @details
-#' Les millésimes du COG disponibles sont les suivants : 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019. \cr
 #'
 #' Les codes de départements renseignés dans le champ 'var_departement' doivent être compris dans la liste suivante :
 #' \itemize{
@@ -65,10 +64,9 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
     shape_origine <- st_cast(shape_origine, "GEOMETRYCOLLECTION") %>% st_collection_extract("POLYGON")
     warning("Les entités de l'objet en entrée ont été converties en type POLYGONE")
   }
-  st_cast(DEP_FRMETDROM, "GEOMETRYCOLLECTION") %>% st_collection_extract("POLYGON")
 
   # nom de la colonne géometrie
-  nom_col_geom <- attr(shape_origine, "sf_column")
+  # nom_col_geom <- attr(shape_origine, "sf_column")
 
   # reprojection en epsg 3857
   shape_origine <-
@@ -77,7 +75,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
 
   # parametres de la transformation
 
-  param_DROM_rapp <- param_transfo_OM %>%
+  param_DROM_rapp <- param_transfo_om %>%
     filter(type_rapp %in% type_transfo)
 
   # transformation de la géometrie
@@ -135,6 +133,19 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       st_set_crs(3857)
   }
 
+  if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '975') %>% nrow() >0) {
+    shape_975 <-
+      shape_origine %>%
+      filter(!!sym(var_departement) %in% "975") %>%
+      as(., 'Spatial') %>%
+      elide(rot=param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(rotation),
+            scale=param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(echelle)) %>%
+      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(shift_x),
+                    param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(shift_y))) %>%
+      st_as_sf(.) %>%
+      st_set_crs(3857)
+  }
+
   if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '976') %>% nrow() >0) {
     shape_976 <-
       shape_origine %>%
@@ -178,10 +189,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
                              if(exists("shape_972")) shape_972,
                              if(exists("shape_973")) shape_973,
                              if(exists("shape_974")) shape_974,
+                             if(exists("shape_975")) shape_975,
                              if(exists("shape_976")) shape_976,
                              if(exists("shape_977")) shape_977,
                              if(exists("shape_978")) shape_978) %>%
-    rename(!!(nom_col_geom) := geometry) %>%
+    # rename(!!(nom_col_geom) := geometry) %>%
     identity()
 
 }
