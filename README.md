@@ -9,7 +9,9 @@
 
 Le package R `CartOutremer` permet de faciliter la cartographie des
 territoires français d’Outre-Mer (DROM et COM) dans les outils R et
-QGis.
+QGis. Ces territoires sont placés à proximité de la France
+métropolitaine et leur échelle est altérée afin de faciliter la
+lisibilité des cartes produites.
 
 Les territoires de France d’Outre-Mer inclus sont les suivants :
 
@@ -31,39 +33,6 @@ remotes::install_github("ARCEP-dev/cartoutremer")
 ```
 
 # Exemple de traitement :
-
-``` r
-
-library(cartoutremer)
-
-# import des contours des départements de France métropolitaine et des DROM en projection WGS1984 via l'API IGN 
-library(httr)
-api_ignadmin <- "https://wxs.ign.fr/administratif/geoportail/wfs"
-url <- parse_url(api_ignadmin)
-url$query <- list(service = "wfs",
-                  request = "GetFeature",
-                  srsName = "EPSG:4326",
-                  typename = "ADMINEXPRESS-COG.LATEST:departement")
-
-DEP_FRMETDROM <- build_url(url) %>% read_sf()
-
-# transformation des DROM pour les afficher proches de la France métropolitaine
-DEP_FRMETDROM.proches <-
-  transfo_om(shape_origine = DEP_FRMETDROM %>%
-                             # uniquement les DROM
-                             filter(substr(INSEE_DEP,1,2) %in% "97"),
-             var_departement = "INSEE_DEP",
-             type_transfo = "v1")
-
-# cartographie avec ggplot 
-ggplot() +
-  geom_sf(data = DEP_GEO_FRMET %>%
-                 # uniquement les départements de France métropolitaine
-                filter(!substr(INSEE_DEP,1,2) %in% "97") %>%
-                # agrégation des DROM visuellement rapprochés
-                rbind.data.frame(DEP_FRMETDROM.proches),
-          color = "black")
-```
 
 # Ressources annexes :
 
