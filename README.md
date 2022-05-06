@@ -13,6 +13,9 @@ QGis. Ces territoires sont placés à proximité de la France
 métropolitaine et leur échelle est altérée afin de faciliter la
 lisibilité des cartes produites.
 
+Les transformations d’entités géographiques de type point, ligne et
+polygone sont supportées.
+
 Les territoires de France d’Outre-Mer inclus sont les suivants :
 
   - l’ensemble des DROM (Départements et Régions d’outre-mer)
@@ -32,7 +35,98 @@ Les territoires de France d’Outre-Mer inclus sont les suivants :
 remotes::install_github("ARCEP-dev/cartoutremer")
 ```
 
-# Exemple de traitement :
+# Exemple :
+
+``` r
+library(cartoutremer)
+
+# import des contours des départements de France métropolitaine et des DROM en projection WGS1984 via l'API IGN 
+library(httr)
+api_ignadmin <- "https://wxs.ign.fr/administratif/geoportail/wfs"
+url <- parse_url(api_ignadmin)
+url$query <- list(service = "wfs",
+                  request = "GetFeature",
+                  srsName = "EPSG:4326",
+                  typename = "ADMINEXPRESS-COG.LATEST:departement")
+
+DEP_FRMETDROM <- build_url(url) %>% read_sf() %>% select(-gml_id, -insee_reg)
+
+# sélection des départements de France métropolitaine et conversion en projection conforme (RGF 93)
+DEP_FRMET <-
+  DEP_FRMETDROM %>%
+  filter(!substr(insee_dep,1,2) %in% "97") %>%
+  st_transform(2154)
+
+# transformation des DROM pour les afficher à proximité de la France métropolitaine
+DEP_FRDROM.proches <-
+  transfo_om(shape_origine = DEP_FRMETDROM %>%
+                             # uniquement les DROM
+                             filter(substr(insee_dep,1,2) %in% "97"),
+             var_departement = "insee_dep",
+             type_transfo = "v1")
+
+
+# cartographie avec ggplot 
+library(ggplot2)
+ggplot() +
+  geom_sf(data = DEP_FRMET %>%
+                # agrégation des DROM visuellement rapprochés
+                rbind.data.frame(DEP_FRDROM.proches))
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+``` r
+# ajout des COM 975/977/978
+
+DEP_977_978 <- st_read("https://static.data.gouv.fr/resources/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/20220506-142254/departement.geojson",quiet = TRUE) %>%
+  # mise en cohérence des champs
+select(id=ID, nom_m = NOM_DEP, nom = NOM_DEP_M, insee_dep = INSEE_DEP, the_geom = geometry)
+
+DEP_975 <- st_read("https://static.data.gouv.fr/resources/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/20220506-142220/departement.geojson",quiet = TRUE) %>%
+  # mise en cohérence des champs
+select(id=ID, nom_m = NOM_DEP, nom = NOM_DEP_M, insee_dep = INSEE_DEP, the_geom = geometry)
+  
+# transformation des DROM pour les afficher à proximité de la France métropolitaine
+DEP_977_978.proche <-
+  transfo_om(shape_origine = DEP_977_978,
+             var_departement = "insee_dep",
+             type_transfo = "v1")
+
+DEP_975.proche <-
+  transfo_om(shape_origine = DEP_975,
+             var_departement = "insee_dep",
+             type_transfo = "v1")
+
+# cartographie 
+ggplot() +
+  geom_sf(data = DEP_FRMET %>%
+                # agrégation des DROM visuellement rapprochés
+                rbind.data.frame(DEP_FRDROM.proches) %>%
+                # agrégation des COM visuellement rapprochés
+                rbind.data.frame(DEP_975.proche) %>%
+                rbind.data.frame(DEP_977_978.proche),
+          aes(fill = insee_dep),
+          show.legend = FALSE,
+          lwd  = 0) +
+  coord_sf(crs = 2154, datum = NA)
+```
+
+# Ajout des cartons
+
+``` r
+ggplot() +
+  geom_sf(data = DEP_FRMET %>%
+                # agrégation des DROM visuellement rapprochés
+                rbind.data.frame(DEP_FRDROM.proches)) +
+  geom_rect(data = param_cadres_om,
+              aes(xmin = xmin, xmax = xmax, 
+                  ymin = ymin, ymax = ymax, 
+                  group = DEP),
+              fill = NA,
+              color = "grey60",
+              alpha = 1)
+```
 
 # Ressources annexes :
 
