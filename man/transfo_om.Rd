@@ -4,7 +4,7 @@
 \alias{transfo_om}
 \title{Transformer un territoire de France d'Outre-Mer pour le placer près de la France métropolitaine.}
 \usage{
-transfo_om(shape_origine, var_departement, type_transfo)
+transfo_om(shape_origine, var_departement, type_transfo = "v1")
 }
 \arguments{
 \item{shape_origine}{Table géographique (classe sf dataframe) en entrée contenant les entités du territoire de France d'Outre-Mer. Les géométries de ces entités peuvent être de type point, ligne ou polygone.}
