@@ -42,9 +42,10 @@
 #' @export
 
 
-transfo_om <- function(shape_origine, var_departement, type_transfo){
+transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
 
   # controle de la classe du dataframe en entrée
+  if (missing(shape_origine)) { stop("L'argument 'shape_origine' définissant l'objet en entrée doit être renseigné") }
   if (is(shape_origine,"data.frame")==F) { stop("L'objet en entrée doit être de classe 'data.frame'") }
   if (is(shape_origine,"sf")==F) { stop("L'objet en entrée doit être de classe 'sf'") }
 
@@ -52,11 +53,19 @@ transfo_om <- function(shape_origine, var_departement, type_transfo){
   if (nrow(shape_origine) == 0) { stop("L'objet en entrée ne doit pas être vide") }
 
   # controle de la présence du champ département
-  if (!!sym(var_departement) %in% colnames(shape_origine)) { stop("Le champ 'var_departement' de l'objet en entrée doit être renseigné") }
-  if (!(!!sym(var_departement) %in% c("971","972","973","974","975", "976", "977", "978"))) { stop("Les codes de départements renseignés doivent être compris dans la liste suivante : {971,972,973,974,975,976,977,978} ") }
+  if (missing(var_departement)) { stop("Le champ 'var_departement' de l'objet en entrée doit être renseigné") }
+  # if (shape_origine %>% select(!!sym(var_departement)) %in% c("971","972","973","974","975", "976", "977", "978")) { stop("Les codes de départements renseignés doivent être compris dans la liste suivante : {971,972,973,974,975,976,977,978} ") }
 
-  # code departement converti en caractère
-  !!sym(var_departement) %>% as.character()
+  # controle de la présence du type de transformation
+  if (missing(type_transfo)) { stop("L'argument 'type_transfo' doit être renseigné") }
+
+  # conversion du type de géométrie si nécessaire
+  # MULTISURFACE -> POLYGON
+  if (any(st_geometry_type(shape_origine) %in% "MULTISURFACE")){
+    shape_origine <- st_cast(shape_origine, "GEOMETRYCOLLECTION") %>% st_collection_extract("POLYGON")
+    warning("Les entités de l'objet en entrée ont été converties en type POLYGONE")
+  }
+  st_cast(DEP_FRMETDROM, "GEOMETRYCOLLECTION") %>% st_collection_extract("POLYGON")
 
   # nom de la colonne géometrie
   nom_col_geom <- attr(shape_origine, "sf_column")
@@ -73,7 +82,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo){
 
   # transformation de la géometrie
 
-  if (shape_origine %>% filter(!!sym(var_departement) %in% '971') %>% nrow() >0) {
+  if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '971') %>% nrow() >0) {
     shape_971 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "971") %>%
@@ -87,7 +96,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo){
       st_set_crs(3857)
   }
 
-  if (shape_origine %>% filter(!!sym(var_departement) %in% '972') %>% nrow() >0) {
+  if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '972') %>% nrow() >0) {
     shape_972 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "972") %>%
@@ -100,7 +109,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo){
       st_set_crs(3857)
   }
 
-  if (shape_origine %>% filter(!!sym(var_departement) %in% '973') %>% nrow() >0) {
+  if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '973') %>% nrow() >0) {
     shape_973 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "973") %>%
@@ -113,7 +122,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo){
       st_set_crs(3857)
   }
 
-  if (shape_origine %>% filter(!!sym(var_departement) %in% '974') %>% nrow() >0) {
+  if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '974') %>% nrow() >0) {
     shape_974 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "974") %>%
@@ -126,7 +135,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo){
       st_set_crs(3857)
   }
 
-  if (shape_origine %>% filter(!!sym(var_departement) %in% '976') %>% nrow() >0) {
+  if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '976') %>% nrow() >0) {
     shape_976 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "976") %>%
@@ -139,7 +148,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo){
       st_set_crs(3857)
   }
 
-  if (shape_origine %>% filter(!!sym(var_departement) %in% '977') %>% nrow() >0) {
+  if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '977') %>% nrow() >0) {
     shape_977 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "977") %>%
@@ -152,7 +161,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo){
       st_set_crs(3857)
   }
 
-  if (shape_origine %>% filter(!!sym(var_departement) %in% '978') %>% nrow() >0) {
+  if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '978') %>% nrow() >0) {
     shape_978 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "978") %>%
