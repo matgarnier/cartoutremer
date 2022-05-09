@@ -66,7 +66,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
   }
 
   # nom de la colonne géometrie
-  # nom_col_geom <- attr(shape_origine, "sf_column")
+  nom_col_geom <- attr(shape_origine, "sf_column")
 
   # reprojection en epsg 3857
   shape_origine <-
@@ -196,6 +196,10 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
     # rename(!!(nom_col_geom) := geometry) %>%
     identity()
 
+    # renommage du champ geometrie
+  st_geometry(shape_origine.rap) <- nom_col_geom
+
+  shape_origine.rap
 }
 
 

@@ -65,16 +65,18 @@ DEP_FRDROM.proches <-
              var_departement = "insee_dep",
              type_transfo = "v1")
 
+colnames(DEP_FRMET)
+#> [1] "id"        "nom_m"     "nom"       "insee_dep" "the_geom"
+colnames(DEP_FRDROM.proches)
+#> [1] "id"        "nom_m"     "nom"       "insee_dep" "geometry"
 
 # cartographie avec ggplot 
-library(ggplot2)
-ggplot() +
-  geom_sf(data = DEP_FRMET %>%
-                # agrégation des DROM visuellement rapprochés
-                rbind.data.frame(DEP_FRDROM.proches))
+# library(ggplot2)
+# ggplot() +
+#   geom_sf(data = DEP_FRMET %>%
+#                 # agrégation des DROM visuellement rapprochés
+#                 rbind.data.frame(DEP_FRDROM.proches))
 ```
-
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ``` r
 # ajout des COM 975/977/978
@@ -92,12 +94,13 @@ DEP_977_978.proche <-
   transfo_om(shape_origine = DEP_977_978,
              var_departement = "insee_dep",
              type_transfo = "v1")
-
+# colnames(DEP_977_978.proche)
 DEP_975.proche <-
   transfo_om(shape_origine = DEP_975,
              var_departement = "insee_dep",
              type_transfo = "v1")
-
+# colnames(DEP_975.proche)
+# colnames(DEP_FRMET)
 # cartographie 
 ggplot() +
   geom_sf(data = DEP_FRMET %>%

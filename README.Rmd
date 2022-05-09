@@ -73,13 +73,15 @@ DEP_FRDROM.proches <-
              var_departement = "insee_dep",
              type_transfo = "v1")
 
+colnames(DEP_FRMET)
+colnames(DEP_FRDROM.proches)
 
 # cartographie avec ggplot 
-library(ggplot2)
-ggplot() +
-  geom_sf(data = DEP_FRMET %>%
-                # agrégation des DROM visuellement rapprochés
-                rbind.data.frame(DEP_FRDROM.proches))
+# library(ggplot2)
+# ggplot() +
+#   geom_sf(data = DEP_FRMET %>%
+#                 # agrégation des DROM visuellement rapprochés
+#                 rbind.data.frame(DEP_FRDROM.proches))
 
 
 ```
@@ -101,12 +103,13 @@ DEP_977_978.proche <-
   transfo_om(shape_origine = DEP_977_978,
              var_departement = "insee_dep",
              type_transfo = "v1")
-
+# colnames(DEP_977_978.proche)
 DEP_975.proche <-
   transfo_om(shape_origine = DEP_975,
              var_departement = "insee_dep",
              type_transfo = "v1")
-
+# colnames(DEP_975.proche)
+# colnames(DEP_FRMET)
 # cartographie 
 ggplot() +
   geom_sf(data = DEP_FRMET %>%
