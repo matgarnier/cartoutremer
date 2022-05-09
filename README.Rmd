@@ -38,14 +38,14 @@ Les territoires de France d'Outre-Mer inclus sont les suivants :
 
 # Installation :  
   
-```{r eval=FALSE}
+```{r eval=F, message = F, warning = F}
 remotes::install_github("ARCEP-dev/cartoutremer")
 
 ```
 
 # Exemple :
 
-```{r eval=T, echo=T, message=F, warning=F , dpi= 500}
+```{r carto_drom, eval=T, echo=T, message=F, warning=F , dpi= 500}
 library(cartoutremer)
 
 # import des contours des départements de France métropolitaine et des DROM en projection WGS1984 via l'API IGN 
@@ -73,21 +73,19 @@ DEP_FRDROM.proches <-
              var_departement = "insee_dep",
              type_transfo = "v1")
 
-colnames(DEP_FRMET)
-colnames(DEP_FRDROM.proches)
 
 # cartographie avec ggplot 
-# library(ggplot2)
-# ggplot() +
-#   geom_sf(data = DEP_FRMET %>%
-#                 # agrégation des DROM visuellement rapprochés
-#                 rbind.data.frame(DEP_FRDROM.proches))
+library(ggplot2)
+ggplot() +
+  geom_sf(data = DEP_FRMET %>%
+                # agrégation des DROM visuellement rapprochés
+                rbind.data.frame(DEP_FRDROM.proches))
 
 
 ```
 
 
-```{r eval=F, echo=T, message=F, warning=F , dpi= 500}
+```{r carto_com, eval=T, echo=T, message=F, warning=F , dpi= 500}
 # ajout des COM 975/977/978
 
 DEP_977_978 <- st_read("https://static.data.gouv.fr/resources/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/20220506-142254/departement.geojson",quiet = TRUE) %>%
@@ -108,8 +106,7 @@ DEP_975.proche <-
   transfo_om(shape_origine = DEP_975,
              var_departement = "insee_dep",
              type_transfo = "v1")
-# colnames(DEP_975.proche)
-# colnames(DEP_FRMET)
+
 # cartographie 
 ggplot() +
   geom_sf(data = DEP_FRMET %>%
@@ -128,18 +125,20 @@ ggplot() +
 
 # Ajout des cartons
 
-```{r eval=F, echo=T, message=F, warning=F , dpi= 500}
+```{r cartons, eval=F, echo=T, message=F, warning=F , dpi= 500}
 ggplot() +
   geom_sf(data = DEP_FRMET %>%
                 # agrégation des DROM visuellement rapprochés
-                rbind.data.frame(DEP_FRDROM.proches)) +
+                rbind.data.frame(DEP_FRDROM.proches) %>%
+                # agrégation des COM visuellement rapprochés
+                rbind.data.frame(DEP_975.proche) %>%
+                rbind.data.frame(DEP_977_978.proche)) +
   geom_rect(data = param_cadres_om,
               aes(xmin = xmin, xmax = xmax, 
                   ymin = ymin, ymax = ymax, 
-                  group = DEP),
+                  group = DEP, color = DEP),
               fill = NA,
-              color = "grey60",
-              alpha = 1)
+              size = 1.5)
 
 ```
 

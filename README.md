@@ -65,18 +65,16 @@ DEP_FRDROM.proches <-
              var_departement = "insee_dep",
              type_transfo = "v1")
 
-colnames(DEP_FRMET)
-#> [1] "id"        "nom_m"     "nom"       "insee_dep" "the_geom"
-colnames(DEP_FRDROM.proches)
-#> [1] "id"        "nom_m"     "nom"       "insee_dep" "geometry"
 
 # cartographie avec ggplot 
-# library(ggplot2)
-# ggplot() +
-#   geom_sf(data = DEP_FRMET %>%
-#                 # agrégation des DROM visuellement rapprochés
-#                 rbind.data.frame(DEP_FRDROM.proches))
+library(ggplot2)
+ggplot() +
+  geom_sf(data = DEP_FRMET %>%
+                # agrégation des DROM visuellement rapprochés
+                rbind.data.frame(DEP_FRDROM.proches))
 ```
+
+<img src="man/figures/README-carto_drom-1.png" width="100%" />
 
 ``` r
 # ajout des COM 975/977/978
@@ -99,8 +97,7 @@ DEP_975.proche <-
   transfo_om(shape_origine = DEP_975,
              var_departement = "insee_dep",
              type_transfo = "v1")
-# colnames(DEP_975.proche)
-# colnames(DEP_FRMET)
+
 # cartographie 
 ggplot() +
   geom_sf(data = DEP_FRMET %>%
@@ -115,20 +112,24 @@ ggplot() +
   coord_sf(crs = 2154, datum = NA)
 ```
 
+<img src="man/figures/README-carto_com-1.png" width="100%" />
+
 # Ajout des cartons
 
 ``` r
 ggplot() +
   geom_sf(data = DEP_FRMET %>%
                 # agrégation des DROM visuellement rapprochés
-                rbind.data.frame(DEP_FRDROM.proches)) +
+                rbind.data.frame(DEP_FRDROM.proches) %>%
+                # agrégation des COM visuellement rapprochés
+                rbind.data.frame(DEP_975.proche) %>%
+                rbind.data.frame(DEP_977_978.proche)) +
   geom_rect(data = param_cadres_om,
               aes(xmin = xmin, xmax = xmax, 
                   ymin = ymin, ymax = ymax, 
-                  group = DEP),
+                  group = DEP, color = DEP),
               fill = NA,
-              color = "grey60",
-              alpha = 1)
+              size = 1.5)
 ```
 
 # Ressources annexes :
