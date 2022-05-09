@@ -38,7 +38,7 @@ Les territoires de France d'Outre-Mer inclus sont les suivants :
 
 # Installation :  
   
-```{r eval=F, message = F, warning = F}
+```{r eval=T, message = F, warning = F}
 remotes::install_github("ARCEP-dev/cartoutremer")
 
 ```
@@ -125,7 +125,7 @@ ggplot() +
 
 # Ajout des cartons
 
-```{r cartons, eval=F, echo=T, message=F, warning=F , dpi= 500}
+```{r cartons, eval=T, echo=T, message=F, warning=F , dpi= 500}
 ggplot() +
   geom_sf(data = DEP_FRMET %>%
                 # agrégation des DROM visuellement rapprochés
@@ -138,7 +138,7 @@ ggplot() +
                   ymin = ymin, ymax = ymax, 
                   group = DEP, color = DEP),
               fill = NA,
-              size = 1.5)
+              stroke = 1)
 
 ```
 

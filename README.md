@@ -129,8 +129,10 @@ ggplot() +
                   ymin = ymin, ymax = ymax, 
                   group = DEP, color = DEP),
               fill = NA,
-              size = 1.5)
+              stroke = 1)
 ```
+
+<img src="man/figures/README-cartons-1.png" width="100%" />
 
 # Ressources annexes :
 
