@@ -133,12 +133,22 @@ ggplot() +
                 # agrégation des COM visuellement rapprochés
                 rbind.data.frame(DEP_975.proche) %>%
                 rbind.data.frame(DEP_977_978.proche)) +
+  # délimitations des zones
   geom_rect(data = param_cadres_om,
               aes(xmin = xmin, xmax = xmax, 
                   ymin = ymin, ymax = ymax, 
                   group = DEP, color = DEP),
               fill = NA,
-              stroke = 1)
+              stroke = 1) +
+  # affichage des étiquettes
+    geom_text(data = param_cadres_om,
+               aes(x = xmax-20000, 
+                   y = ymax-15000, 
+                   color = DEP,
+                   label = DEP),
+               fill = NA,
+               size = 2.3,
+               fontface = "bold")
 
 ```
 
