@@ -90,7 +90,6 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(shift_x),
                     param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(shift_y))) %>%
       st_as_sf(.) %>%
-      # rename(geom = geometry) %>%
       st_set_crs(2154)
   }
 
@@ -194,6 +193,8 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       # st_set_crs(2154) %>%
       st_transform(2154) %>%
       identity()
+    # renommage du champ de geometries
+    st_geometry(shape_FRMET) <- "geometry"
   }
 
   shape_origine.rap <- rbind(if(exists("shape_971")) shape_971,
@@ -205,10 +206,9 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
                              if(exists("shape_977")) shape_977,
                              if(exists("shape_978")) shape_978,
                              if(exists("shape_FRMET")) shape_FRMET) %>%
-    # rename(!!(nom_col_geom) := geometry) %>%
     identity()
 
-    # renommage du champ geometrie
+    # renommage du champ de geometries
   st_geometry(shape_origine.rap) <- nom_col_geom
 
   shape_origine.rap
