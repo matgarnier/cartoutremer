@@ -51,32 +51,22 @@ url$query <- list(service = "wfs",
 
 DEP_FRMETDROM <- build_url(url) %>% read_sf() %>% select(-gml_id, -insee_reg)
 
-# sélection des départements de France métropolitaine et conversion en projection conforme (RGF 93)
-DEP_FRMET <-
-  DEP_FRMETDROM %>%
-  filter(!substr(insee_dep,1,2) %in% "97") %>%
-  st_transform(2154)
-
 # transformation des DROM pour les afficher à proximité de la France métropolitaine
-DEP_FRDROM.proches <-
-  transfo_om(shape_origine = DEP_FRMETDROM %>%
-                             # uniquement les DROM
-                             filter(substr(insee_dep,1,2) %in% "97"),
+DEP_FRMETDROM.proches <-
+  transfo_om(shape_origine = DEP_FRMETDROM,
              var_departement = "insee_dep",
              type_transfo = "v1")
 
-
-# cartographie avec ggplot 
+# cartographie avec ggplot
 library(ggplot2)
 ggplot() +
-  geom_sf(data = DEP_FRMET %>%
-                # agrégation des DROM visuellement rapprochés
-                rbind.data.frame(DEP_FRDROM.proches))
+  geom_sf(data = DEP_FRMETDROM.proches)
 ```
 
-<img src="man/figures/README-carto_drom-1.png" width="100%" />
+<img src="man/figures/README-carto_frmetdrom-1.png" width="100%" />
 
 ``` r
+
 # ajout des COM 975/977/978
 
 DEP_977_978 <- st_read("https://static.data.gouv.fr/resources/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/20220506-142254/departement.geojson",quiet = TRUE) %>%
@@ -100,16 +90,15 @@ DEP_975.proche <-
 
 # cartographie 
 ggplot() +
-  geom_sf(data = DEP_FRMET %>%
-                # agrégation des DROM visuellement rapprochés
-                rbind.data.frame(DEP_FRDROM.proches) %>%
-                # agrégation des COM visuellement rapprochés
-                rbind.data.frame(DEP_975.proche) %>%
-                rbind.data.frame(DEP_977_978.proche),
+  geom_sf(data = DEP_FRMETDROM.proches,
           aes(fill = insee_dep),
           show.legend = FALSE,
           lwd  = 0) +
-  coord_sf(crs = 2154, datum = NA)
+  geom_sf(data = # agrégation des COM visuellement rapprochés
+                DEP_975.proche %>%
+                bind_rows(DEP_977_978.proche),
+          fill = "red") +
+  coord_sf( datum = NA)
 ```
 
 <img src="man/figures/README-carto_com-1.png" width="100%" />
@@ -118,12 +107,10 @@ ggplot() +
 
 ``` r
 ggplot() +
-  geom_sf(data = DEP_FRMET %>%
-                # agrégation des DROM visuellement rapprochés
-                rbind.data.frame(DEP_FRDROM.proches) %>%
+  geom_sf(data = DEP_FRMETDROM.proches %>%
                 # agrégation des COM visuellement rapprochés
-                rbind.data.frame(DEP_975.proche) %>%
-                rbind.data.frame(DEP_977_978.proche)) +
+                bind_rows(DEP_975.proche) %>%
+                bind_rows(DEP_977_978.proche)) +
   # délimitations des zones
   geom_rect(data = param_cadres_om,
               aes(xmin = xmin, xmax = xmax, 
@@ -139,7 +126,9 @@ ggplot() +
                    label = DEP),
                fill = NA,
                size = 2.3,
-               fontface = "bold")
+               fontface = "bold") +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank())
 ```
 
 <img src="man/figures/README-cartons-1.png" width="100%" />
