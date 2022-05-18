@@ -14,7 +14,9 @@ métropolitaine et leur échelle est altérée afin de faciliter la
 lisibilité des cartes produites.
 
 Les transformations d’entités géographiques de type point, ligne et
-polygone sont supportées.
+polygone sont supportées ; quel que soit le système de projection du
+sfdataframe en entrée, le sfdataframe généré par la fonction
+`transfo_om` est projeté en RGF93 / Lambert-93 (EPSG:2154).
 
 Les territoires de France d’Outre-Mer inclus sont les suivants :
 
