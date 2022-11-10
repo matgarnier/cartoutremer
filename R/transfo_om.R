@@ -184,13 +184,51 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       st_set_crs(2154)
   }
 
+  if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '986') %>% nrow() >0) {
+    shape_986 <-
+      shape_origine %>%
+      filter(!!sym(var_departement) %in% "986") %>%
+      as(., 'Spatial') %>%
+      elide(rot=param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(rotation),
+            scale=param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(echelle)) %>%
+      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(shift_x),
+                    param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(shift_y))) %>%
+      st_as_sf(.) %>%
+      st_set_crs(2154)
+  }
+
+  if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '987') %>% nrow() >0) {
+    shape_987 <-
+      shape_origine %>%
+      filter(!!sym(var_departement) %in% "987") %>%
+      as(., 'Spatial') %>%
+      elide(rot=param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(rotation),
+            scale=param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(echelle)) %>%
+      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(shift_x),
+                    param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(shift_y))) %>%
+      st_as_sf(.) %>%
+      st_set_crs(2154)
+  }
+
+  if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '988') %>% nrow() >0) {
+    shape_988 <-
+      shape_origine %>%
+      filter(!!sym(var_departement) %in% "988") %>%
+      as(., 'Spatial') %>%
+      elide(rot=param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(rotation),
+            scale=param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(echelle)) %>%
+      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(shift_x),
+                    param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(shift_y))) %>%
+      st_as_sf(.) %>%
+      st_set_crs(2154)
+  }
+
   # conservation de la géometrie pour la france métropolitaine
 
   if (shape_origine %>% filter(!substr(as.character(!!sym(var_departement)),1,2) %in% '97') %>% nrow() >0) {
     shape_FRMET <-
       shape_origine %>%
-      filter(!substr(!!sym(var_departement),1,2) %in% "97") %>%
-      # st_set_crs(2154) %>%
+      filter(!substr(!!sym(var_departement),1,2) %in% c("97","98")) %>%
       st_transform(2154) %>%
       identity()
     # renommage du champ de geometries
@@ -205,6 +243,9 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
                              if(exists("shape_976")) shape_976,
                              if(exists("shape_977")) shape_977,
                              if(exists("shape_978")) shape_978,
+                             if(exists("shape_986")) shape_986,
+                             if(exists("shape_987")) shape_987,
+                             if(exists("shape_988")) shape_988,
                              if(exists("shape_FRMET")) shape_FRMET) %>%
     identity()
 
