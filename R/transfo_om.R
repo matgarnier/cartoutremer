@@ -37,6 +37,9 @@
 #' \item{'976' (Mayotte)}
 #' \item{'977' (Saint-Barthélémy)}
 #' \item{'978' (Saint-Martin)}}
+#' \item{'986' (Wallis-et-Futuna)}}
+#' \item{'987' (Polynésie Française)}}
+#' \item{'988' (Nouvelle-Calédonie)}}
 #'
 #' @export
 
