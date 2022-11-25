@@ -41,7 +41,7 @@ Les territoires de France d'Outre-Mer inclus sont les suivants :
 
 # Installation :  
   
-```{r eval=T, message = F, warning = F}
+```{r results='hide', eval=T,echo=F, message = F, warning = F}
 remotes::install_github("ARCEP-dev/cartoutremer")
 
 ```
@@ -145,11 +145,43 @@ ggplot() +
 
 ```
 
+
+
+```{r carto_com_full, eval=T, echo=F, message=F, warning=F , dpi= 500}
+
+# ajout des COM 986/987/988 rapprochés, deuxième version de mise en page (placés à droite de la Fance métropolitaine)
+
+
+DEP_FRMETDROMCOM.proche <-
+  transfo_om(shape_origine = DEP_FRMETDROM %>%
+               rbind.data.frame(DEP_975) %>%
+               rbind.data.frame(DEP_977_978) %>%
+               rbind.data.frame(DEP_WF %>% rename(insee_dep = INSEE_DEP)) %>%
+               rbind.data.frame(DEP_PO %>% rename(insee_dep = INSEE_DEP)) %>%
+               rbind.data.frame(DEP_NC %>% rename(insee_dep = INSEE_DEP)),
+             var_departement = "insee_dep",
+             type_transfo = "v2")
+
+
+# cartographie 
+ggplot() +
+  geom_sf(data = DEP_FRMETDROMCOM.proche,
+          aes(fill = insee_dep),
+          show.legend = FALSE,
+          lwd  = 0) +
+  coord_sf( datum = NA)
+
+
+```
+
+
 # Ressources annexes :
 
 * Contours des communes de France métropolitaine et DROM en projection WGS1984 mis à disposition par l'Arcep sur [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/contours-communes-france-administrative-format-admin-express-avec-arrondissements/)
 
 * Contours des communes des COM (Saint-Pierre-et-Miquelon, Saint-Barthélémy, Saint-Martin) mis à disposition par l'Arcep sur [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/)
+
+* Contours des communes de [Wallis-et-Futuna](https://nauru-data.sprep.org/system/files/wallis-et-futuna_0.zip) , de [Polynésie Française](https://static.data.gouv.fr/resources/limites-geographiques-administratives/20220610-202135/shapefiles.zip) et de [Nouvelle-Calédonie](https://data.opendatasoft.com/explore/dataset/communes-nc-limites-terrestres-simplifiees@nouvelle-caledonie/download/?format=shp&timezone=Europe/Berlin&lang=fr).
 
 
 

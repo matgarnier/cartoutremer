@@ -30,12 +30,11 @@ Les territoires de France d’Outre-Mer inclus sont les suivants :
       - Saint-Pierre-et-Miquelon (975)
       - Saint-Barthélémy (977)
       - Saint-Martin (978)
+      - Wallis-et-Futuna (986)
+      - Polynésie Française (987)
+      - Nouvelle-Calédonie (988)
 
 # Installation :
-
-``` r
-remotes::install_github("ARCEP-dev/cartoutremer")
-```
 
 # Exemple :
 
@@ -114,14 +113,16 @@ ggplot() +
                 bind_rows(DEP_975.proche) %>%
                 bind_rows(DEP_977_978.proche)) +
   # délimitations des zones
-  geom_rect(data = param_cadres_om,
+  geom_rect(data = param_cadres_om %>%
+              filter(type_rapp %in% "v1"),
               aes(xmin = xmin, xmax = xmax, 
                   ymin = ymin, ymax = ymax, 
                   group = DEP, color = DEP),
               fill = NA,
               stroke = 1) +
   # affichage des étiquettes
-    geom_text(data = param_cadres_om,
+    geom_text(data = param_cadres_om %>%
+              filter(type_rapp %in% "v1"),
                aes(x = xmax-20000, 
                    y = ymax-15000, 
                    color = DEP,
@@ -144,3 +145,10 @@ ggplot() +
   - Contours des communes des COM (Saint-Pierre-et-Miquelon,
     Saint-Barthélémy, Saint-Martin) mis à disposition par l’Arcep sur
     [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/)
+
+  - Contours des communes de
+    [Wallis-et-Futuna](https://nauru-data.sprep.org/system/files/wallis-et-futuna_0.zip)
+    , de [Polynésie
+    Française](https://static.data.gouv.fr/resources/limites-geographiques-administratives/20220610-202135/shapefiles.zip)
+    et de
+    [Nouvelle-Calédonie](https://data.opendatasoft.com/explore/dataset/communes-nc-limites-terrestres-simplifiees@nouvelle-caledonie/download/?format=shp&timezone=Europe/Berlin&lang=fr).

@@ -17,6 +17,7 @@ edit_file("DESCRIPTION")
 # données
 usethis::use_data_raw( name = "parametres_transfo_geom", open = TRUE )
 usethis::use_data_raw( name = "parametres_transfo_cadres", open = TRUE )
+usethis::use_data_raw( name = "dl_cartos_986_987_988", open = TRUE )
 
 
 ### fonctions
