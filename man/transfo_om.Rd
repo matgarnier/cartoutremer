@@ -20,16 +20,7 @@ Renvoie une table géographique (classe sf dataframe) contenant les entités du 
 Modifie le champ géométrie du sf dataframe en entrée.
 }
 \details{
-Les codes de départements renseignés dans le champ 'var_departement' doivent être compris dans la liste suivante :
-\itemize{
-\item{'971' (Guadeloupe)}
-\item{'972' (Martinique)}
-\item{'973' (Guyane)}
-\item{'974' (La Réunion)}
-\item{'975' (St-Pierre-et-Miquelon)}
-\item{'976' (Mayotte)}
-\item{'977' (Saint-Barthélémy)}
-\item{'978' (Saint-Martin)}}
+
 }
 \examples{
 

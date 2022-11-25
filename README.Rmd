@@ -147,7 +147,7 @@ ggplot() +
 
 
 
-```{r carto_com_full, eval=T, echo=F, message=F, warning=F , dpi= 500}
+```{r carto_com_full, eval=F, echo=F, message=F, warning=F , dpi= 500}
 
 # ajout des COM 986/987/988 rapprochés, deuxième version de mise en page (placés à droite de la Fance métropolitaine)
 
@@ -156,9 +156,10 @@ DEP_FRMETDROMCOM.proche <-
   transfo_om(shape_origine = DEP_FRMETDROM %>%
                rbind.data.frame(DEP_975) %>%
                rbind.data.frame(DEP_977_978) %>%
-               rbind.data.frame(DEP_WF %>% rename(insee_dep = INSEE_DEP)) %>%
-               rbind.data.frame(DEP_PO %>% rename(insee_dep = INSEE_DEP)) %>%
-               rbind.data.frame(DEP_NC %>% rename(insee_dep = INSEE_DEP)),
+               select(insee_dep) %>%
+               rbind.data.frame(DEP_WF %>% select(insee_dep = INSEE_DEP)) %>%
+               rbind.data.frame(DEP_PO %>% select(insee_dep = INSEE_DEP)) %>%
+               rbind.data.frame(DEP_NC %>% select(insee_dep = INSEE_DEP)),
              var_departement = "insee_dep",
              type_transfo = "v2")
 
