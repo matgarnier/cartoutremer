@@ -41,7 +41,7 @@ Les territoires de France d'Outre-Mer inclus sont les suivants :
 
 # Installation :  
   
-```{r results='hide', eval=T,echo=F, message = F, warning = F}
+```{r eval=T,echo=T, message = F, warning = F}
 remotes::install_github("ARCEP-dev/cartoutremer")
 
 ```
@@ -58,7 +58,7 @@ url <- parse_url(api_ignadmin)
 url$query <- list(service = "wfs",
                   request = "GetFeature",
                   srsName = "EPSG:4326",
-                  typename = "ADMINEXPRESS-COG.LATEST:departement")
+                  typename = "ADMINEXPRESS-COG-CARTO.LATEST:departement")
 
 DEP_FRMETDROM <- build_url(url) %>% read_sf() %>% select(-gml_id, -insee_reg)
 
@@ -108,7 +108,8 @@ ggplot() +
   geom_sf(data = # agrégation des COM visuellement rapprochés
                 DEP_975.proche %>%
                 bind_rows(DEP_977_978.proche),
-          fill = "red") +
+          fill = "red",
+          color = NA) +
   coord_sf( datum = NA)
 
 
@@ -124,6 +125,7 @@ ggplot() +
                 bind_rows(DEP_977_978.proche)) +
   # délimitations des zones
   geom_rect(data = param_cadres_om %>%
+              filter(DEP %in% c("971","972","973","974", "975","976", "977", "978")) %>%
               filter(type_rapp %in% "v1"),
               aes(xmin = xmin, xmax = xmax, 
                   ymin = ymin, ymax = ymax, 
@@ -132,7 +134,8 @@ ggplot() +
               stroke = 1) +
   # affichage des étiquettes
     geom_text(data = param_cadres_om %>%
-              filter(type_rapp %in% "v1"),
+                filter(DEP %in% c("971","972","973","974", "975","976", "977", "978")) %>%
+                filter(type_rapp %in% "v1"),
                aes(x = xmax-20000, 
                    y = ymax-15000, 
                    color = DEP,

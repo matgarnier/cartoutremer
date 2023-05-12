@@ -4,7 +4,6 @@
 # cartoutremer
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 Le package R `CartOutremer` permet de faciliter la cartographie des
@@ -20,21 +19,25 @@ sfdataframe en entrée, le sfdataframe généré par la fonction
 
 Les territoires de France d’Outre-Mer inclus sont les suivants :
 
-  - l’ensemble des DROM (Départements et Régions d’outre-mer)
-      - Guadeloupe (971)
-      - Martinique (972)
-      - Guyane (973)
-      - La Réunion (974)
-      - Mayotte (976)
-  - les COM (Collectivités d’outre-mer) suivantes :
-      - Saint-Pierre-et-Miquelon (975)
-      - Saint-Barthélémy (977)
-      - Saint-Martin (978)
-      - Wallis-et-Futuna (986)
-      - Polynésie Française (987)
-      - Nouvelle-Calédonie (988)
+-   l’ensemble des DROM (Départements et Régions d’outre-mer)
+    -   Guadeloupe (971)
+    -   Martinique (972)
+    -   Guyane (973)
+    -   La Réunion (974)
+    -   Mayotte (976)
+-   les COM (Collectivités d’outre-mer) suivantes :
+    -   Saint-Pierre-et-Miquelon (975)
+    -   Saint-Barthélémy (977)
+    -   Saint-Martin (978)
+    -   Wallis-et-Futuna (986)
+    -   Polynésie Française (987)
+    -   Nouvelle-Calédonie (988)
 
 # Installation :
+
+``` r
+remotes::install_github("ARCEP-dev/cartoutremer")
+```
 
 # Exemple :
 
@@ -48,7 +51,7 @@ url <- parse_url(api_ignadmin)
 url$query <- list(service = "wfs",
                   request = "GetFeature",
                   srsName = "EPSG:4326",
-                  typename = "ADMINEXPRESS-COG.LATEST:departement")
+                  typename = "ADMINEXPRESS-COG-CARTO.LATEST:departement")
 
 DEP_FRMETDROM <- build_url(url) %>% read_sf() %>% select(-gml_id, -insee_reg)
 
@@ -67,7 +70,6 @@ ggplot() +
 <img src="man/figures/README-carto_frmetdrom-1.png" width="100%" />
 
 ``` r
-
 # ajout des COM 975/977/978
 
 DEP_977_978 <- st_read("https://static.data.gouv.fr/resources/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/20220506-142254/departement.geojson",quiet = TRUE) %>%
@@ -98,7 +100,8 @@ ggplot() +
   geom_sf(data = # agrégation des COM visuellement rapprochés
                 DEP_975.proche %>%
                 bind_rows(DEP_977_978.proche),
-          fill = "red") +
+          fill = "red",
+          color = NA) +
   coord_sf( datum = NA)
 ```
 
@@ -114,6 +117,7 @@ ggplot() +
                 bind_rows(DEP_977_978.proche)) +
   # délimitations des zones
   geom_rect(data = param_cadres_om %>%
+              filter(DEP %in% c("971","972","973","974", "975","976", "977", "978")) %>%
               filter(type_rapp %in% "v1"),
               aes(xmin = xmin, xmax = xmax, 
                   ymin = ymin, ymax = ymax, 
@@ -122,7 +126,8 @@ ggplot() +
               stroke = 1) +
   # affichage des étiquettes
     geom_text(data = param_cadres_om %>%
-              filter(type_rapp %in% "v1"),
+                filter(DEP %in% c("971","972","973","974", "975","976", "977", "978")) %>%
+                filter(type_rapp %in% "v1"),
                aes(x = xmax-20000, 
                    y = ymax-15000, 
                    color = DEP,
@@ -138,15 +143,15 @@ ggplot() +
 
 # Ressources annexes :
 
-  - Contours des communes de France métropolitaine et DROM en projection
+-   Contours des communes de France métropolitaine et DROM en projection
     WGS1984 mis à disposition par l’Arcep sur
     [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/contours-communes-france-administrative-format-admin-express-avec-arrondissements/)
 
-  - Contours des communes des COM (Saint-Pierre-et-Miquelon,
+-   Contours des communes des COM (Saint-Pierre-et-Miquelon,
     Saint-Barthélémy, Saint-Martin) mis à disposition par l’Arcep sur
     [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/)
 
-  - Contours des communes de
+-   Contours des communes de
     [Wallis-et-Futuna](https://nauru-data.sprep.org/system/files/wallis-et-futuna_0.zip)
     , de [Polynésie
     Française](https://static.data.gouv.fr/resources/limites-geographiques-administratives/20220610-202135/shapefiles.zip)
