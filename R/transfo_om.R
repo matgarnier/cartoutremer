@@ -12,8 +12,7 @@
 #'
 #' @importFrom dplyr filter rename
 #' @importFrom rlang sym
-#' @importFrom sf st_transform st_as_sf st_set_crs
-#' @importFrom maptools elide
+#' @importFrom sf st_transform st_as_sf st_set_crs st_bbox st_geometry st_crs st_combine st_collection_extract st_intersection st_cast st_union
 #'
 #' @examples
 #'
@@ -87,143 +86,143 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
     shape_971 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "971") %>%
-      as(., 'Spatial') %>%
-      elide(rot=param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(rotation),
-            scale=param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(echelle)) %>%
-      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(shift_x),
-                    param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(shift_y))) %>%
-      st_as_sf(.) %>%
-      st_set_crs(2154)
+      f_moveresize_tot(x = . ,
+                       xy = c(param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(shift_x),
+                              param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(shift_y)),
+                       r = param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(rotation),
+                       k = param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(echelle)) %>%
+      st_set_crs(3857) %>%
+      identity()
   }
 
   if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '972') %>% nrow() >0) {
     shape_972 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "972") %>%
-      as(., 'Spatial') %>%
-      elide(rot=param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(rotation),
-            scale=param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(echelle)) %>%
-      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(shift_x),
-                    param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(shift_y))) %>%
-      st_as_sf(.) %>%
-      st_set_crs(2154)
+      f_moveresize_tot(x = . ,
+                       xy = c(param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(shift_x),
+                              param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(shift_y)),
+                       r = param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(rotation),
+                       k = param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(echelle)) %>%
+      st_set_crs(3857) %>%
+      identity()
   }
 
   if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '973') %>% nrow() >0) {
     shape_973 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "973") %>%
-      as(., 'Spatial') %>%
-      elide(rot=param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(rotation),
-            scale=param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(echelle)) %>%
-      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(shift_x),
-                    param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(shift_y))) %>%
-      st_as_sf(.) %>%
-      st_set_crs(2154)
+      f_moveresize_tot(x = . ,
+                       xy = c(param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(shift_x),
+                              param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(shift_y)),
+                       r = param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(rotation),
+                       k = param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(echelle)) %>%
+      st_set_crs(3857) %>%
+      identity()
   }
 
   if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '974') %>% nrow() >0) {
     shape_974 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "974") %>%
-      as(., 'Spatial') %>%
-      elide(rot=param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(rotation),
-            scale=param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(echelle)) %>%
-      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(shift_x),
-                    param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(shift_y))) %>%
-      st_as_sf(.) %>%
-      st_set_crs(2154)
+      f_moveresize_tot(x = . ,
+                       xy = c(param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(shift_x),
+                              param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(shift_y)),
+                       r = param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(rotation),
+                       k = param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(echelle)) %>%
+      st_set_crs(3857) %>%
+      identity()
   }
 
   if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '975') %>% nrow() >0) {
     shape_975 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "975") %>%
-      as(., 'Spatial') %>%
-      elide(rot=param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(rotation),
-            scale=param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(echelle)) %>%
-      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(shift_x),
-                    param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(shift_y))) %>%
-      st_as_sf(.) %>%
-      st_set_crs(2154)
+      f_moveresize_tot(x = . ,
+                       xy = c(param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(shift_x),
+                              param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(shift_y)),
+                       r = param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(rotation),
+                       k = param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(echelle)) %>%
+      st_set_crs(3857) %>%
+      identity()
   }
 
   if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '976') %>% nrow() >0) {
     shape_976 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "976") %>%
-      as(., 'Spatial') %>%
-      elide(rot=param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(rotation),
-            scale=param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(echelle)) %>%
-      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(shift_x),
-                    param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(shift_y))) %>%
-      st_as_sf(.) %>%
-      st_set_crs(2154)
+      f_moveresize_tot(x = . ,
+                       xy = c(param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(shift_x),
+                              param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(shift_y)),
+                       r = param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(rotation),
+                       k = param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(echelle)) %>%
+      st_set_crs(3857) %>%
+      identity()
   }
 
   if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '977') %>% nrow() >0) {
     shape_977 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "977") %>%
-      as(., 'Spatial') %>%
-      elide(rot=param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(rotation),
-            scale=param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(echelle)) %>%
-      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(shift_x),
-                    param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(shift_y))) %>%
-      st_as_sf(.) %>%
-      st_set_crs(2154)
+      f_moveresize_tot(x = . ,
+                       xy = c(param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(shift_x),
+                              param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(shift_y)),
+                       r = param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(rotation),
+                       k = param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(echelle)) %>%
+      st_set_crs(3857) %>%
+      identity()
   }
 
   if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '978') %>% nrow() >0) {
     shape_978 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "978") %>%
-      as(., 'Spatial') %>%
-      elide(rot=param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(rotation),
-            scale=param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(echelle)) %>%
-      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(shift_x),
-                    param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(shift_y))) %>%
-      st_as_sf(.) %>%
-      st_set_crs(2154)
+      f_moveresize_tot(x = . ,
+                       xy = c(param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(shift_x),
+                              param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(shift_y)),
+                       r = param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(rotation),
+                       k = param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(echelle)) %>%
+      st_set_crs(3857) %>%
+      identity()
   }
 
   if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '986') %>% nrow() >0) {
     shape_986 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "986") %>%
-      as(., 'Spatial') %>%
-      elide(rot=param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(rotation),
-            scale=param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(echelle)) %>%
-      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(shift_x),
-                    param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(shift_y))) %>%
-      st_as_sf(.) %>%
-      st_set_crs(2154)
+      f_moveresize_tot(x = . ,
+                       xy = c(param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(shift_x),
+                              param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(shift_y)),
+                       r = param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(rotation),
+                       k = param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(echelle)) %>%
+      st_set_crs(3857) %>%
+      identity()
   }
 
   if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '987') %>% nrow() >0) {
     shape_987 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "987") %>%
-      as(., 'Spatial') %>%
-      elide(rot=param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(rotation),
-            scale=param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(echelle)) %>%
-      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(shift_x),
-                    param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(shift_y))) %>%
-      st_as_sf(.) %>%
-      st_set_crs(2154)
+      f_moveresize_tot(x = . ,
+                       xy = c(param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(shift_x),
+                              param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(shift_y)),
+                       r = param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(rotation),
+                       k = param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(echelle)) %>%
+      st_set_crs(3857) %>%
+      identity()
   }
 
   if (shape_origine %>% filter(as.character(!!sym(var_departement)) %in% '988') %>% nrow() >0) {
     shape_988 <-
       shape_origine %>%
       filter(!!sym(var_departement) %in% "988") %>%
-      as(., 'Spatial') %>%
-      elide(rot=param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(rotation),
-            scale=param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(echelle)) %>%
-      elide(shift=c(param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(shift_x),
-                    param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(shift_y))) %>%
-      st_as_sf(.) %>%
-      st_set_crs(2154)
+      f_moveresize_tot(x = . ,
+                       xy = c(param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(shift_x),
+                              param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(shift_y)),
+                       r = param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(rotation),
+                       k = param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(echelle)) %>%
+      st_set_crs(3857) %>%
+      identity()
   }
 
   # conservation de la géometrie pour la france métropolitaine
@@ -232,7 +231,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
     shape_FRMET <-
       shape_origine %>%
       filter(!substr(!!sym(var_departement),1,2) %in% c("97","98")) %>%
-      st_transform(2154) %>%
+      st_transform(3857) %>%
       identity()
     # renommage du champ de geometries
     st_geometry(shape_FRMET) <- "geometry"
@@ -252,10 +251,91 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
                              if(exists("shape_FRMET")) shape_FRMET) %>%
     identity()
 
-    # renommage du champ de geometries
+  # renommage du champ de geometries
   st_geometry(shape_origine.rap) <- nom_col_geom
 
   shape_origine.rap
 }
 
 
+# fonction basée sur sf uniquement
+# à partir du package "riatelab/mapinsetr"
+# avec ajout du paramètre rotation
+
+
+f_moveresize_tot <- function (x, mask = NULL, xy, prj,r, k = 1)
+{
+  if (missing(prj)) {
+    prj <- st_crs(x)
+  }
+  if (missing(mask)) {
+    mask <- st_union(x)
+  }
+  stopifnot(!is.na(st_crs(mask)), !is.na(st_crs(x)))
+  mask <- st_union(mask)
+  if (class(st_geometry(x))[1] == "sfc_POINT") {
+    x <- f_moveresize_pt(x = x, mask = mask, xy = xy,
+                         prj = prj, k = k)
+    return(x)
+  }
+  namesorder <- names(x)
+  cp <- class(st_geometry(x))[1] == "sfc_MULTIPOLYGON"
+  x <- suppressWarnings(st_intersection(x, st_geometry(mask)))
+  xm <- x[1, ]
+  st_geometry(xm) <- st_geometry(mask)
+  x <- rbind(xm, x)
+  cntrd <- st_centroid(st_combine(x))
+  xg <- (st_geometry(x) - cntrd) * k + cntrd[[1]][]
+  st_geometry(x) <- xg + xy - st_bbox(xg)[1:2]
+  x <- x[-1, ]
+
+  if (cp) {
+    x <- st_cast(x, "MULTIPOLYGON")
+  }
+
+
+  st_crs(x) <- prj
+  x <- x[, namesorder]
+
+  # rotate
+  rot = function(a) matrix(c(cos(a), sin(a), -sin(a), cos(a)), 2, 2)
+  st_geometry(x) = (st_geometry(x) - st_centroid(st_geometry(x))) * rot(pi/r) * .95 + st_centroid(st_geometry(x))
+
+  return(x)
+}
+
+f_moveresize_pt <- function(x, mask, xy, prj, k){
+  # names order mngmt
+  namesorder <- names(x)
+
+  # intersect mask and x
+  x <- suppressWarnings(
+    st_collection_extract(
+      st_intersection(x, st_geometry(mask)),
+      type = c("POINT")
+    )
+  )
+
+  # add mask to x
+  xm <- x[1, ]
+  st_geometry(xm) <- st_geometry(mask)
+  x <- rbind(xm,x)
+
+  # resize & move
+  cntrd <- st_centroid(st_combine(x))
+  xg <- (st_geometry(x) - cntrd) * k + cntrd[[1]][]
+  st_geometry(x) <- xg + xy - st_bbox(xg)[1:2]
+
+  # rotate
+  rot = function(a) matrix(c(cos(a), sin(a), -sin(a), cos(a)), 2, 2)
+  st_geometry(x) = (st_geometry(x) - st_centroid(st_geometry(x[1,]))) * rot(pi/r) * .95 + st_centroid(st_geometry(x[1,]))
+
+  # get rid of mask
+  x <- x[-1,]
+  st_crs(x) <- prj
+
+  # names order mngmt
+  x <- x[, namesorder]
+
+  return(x)
+}

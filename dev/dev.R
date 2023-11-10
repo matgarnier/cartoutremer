@@ -26,7 +26,7 @@ use_r("transfo_om")
 # dependences
 usethis::use_package("dplyr", type = "Depends")
 usethis::use_package("sf", type = "Depends")
-usethis::use_package("maptools", type = "Depends")
+# usethis::use_package("maptools", type = "Depends")
 usethis::use_package("rlang", type = "Depends")
 
 
