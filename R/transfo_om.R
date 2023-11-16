@@ -60,12 +60,12 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
   # controle de la présence du type de transformation
   if (missing(type_transfo)) { stop("L'argument 'type_transfo' doit être renseigné") }
 
-  # conversion du type de géométrie si nécessaire
-  # MULTISURFACE -> POLYGON
-  if (any(st_geometry_type(shape_origine) %in% "MULTISURFACE")){
-    shape_origine <- st_cast(shape_origine, "GEOMETRYCOLLECTION") %>% st_collection_extract("POLYGON")
-    warning("Les entités de l'objet en entrée ont été converties en type POLYGONE")
-  }
+  # # conversion du type de géométrie si nécessaire
+  # # MULTISURFACE -> POLYGON
+  # if (any(st_geometry_type(shape_origine) %in% "MULTISURFACE")){
+  #   shape_origine <- st_cast(shape_origine, "GEOMETRYCOLLECTION") %>% st_collection_extract("POLYGON")
+  #   warning("Les entités de l'objet en entrée ont été converties en type POLYGONE")
+  # }
 
   # nom de la colonne géometrie
   nom_col_geom <- attr(shape_origine, "sf_column")
@@ -89,9 +89,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       f_moveresize_tot(x = . ,
                        xy = c(param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(shift_x),
                               param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(shift_y)),
+                       mask = get("DEP_971") %>% st_transform(3857),
                        r = param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(rotation),
                        k = param_DROM_rapp %>% filter(DEP %in% '971') %>% pull(echelle)) %>%
       st_set_crs(3857) %>%
+      st_transform(2154) %>%
       identity()
   }
 
@@ -102,9 +104,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       f_moveresize_tot(x = . ,
                        xy = c(param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(shift_x),
                               param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(shift_y)),
+                       mask = get("DEP_972") %>% st_transform(3857),
                        r = param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(rotation),
                        k = param_DROM_rapp %>% filter(DEP %in% '972') %>% pull(echelle)) %>%
       st_set_crs(3857) %>%
+      st_transform(2154) %>%
       identity()
   }
 
@@ -115,9 +119,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       f_moveresize_tot(x = . ,
                        xy = c(param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(shift_x),
                               param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(shift_y)),
+                       mask = get("DEP_973") %>% st_transform(3857),
                        r = param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(rotation),
                        k = param_DROM_rapp %>% filter(DEP %in% '973') %>% pull(echelle)) %>%
       st_set_crs(3857) %>%
+      st_transform(2154) %>%
       identity()
   }
 
@@ -128,9 +134,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       f_moveresize_tot(x = . ,
                        xy = c(param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(shift_x),
                               param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(shift_y)),
+                       mask = get("DEP_974") %>% st_transform(3857),
                        r = param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(rotation),
                        k = param_DROM_rapp %>% filter(DEP %in% '974') %>% pull(echelle)) %>%
       st_set_crs(3857) %>%
+      st_transform(2154) %>%
       identity()
   }
 
@@ -141,9 +149,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       f_moveresize_tot(x = . ,
                        xy = c(param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(shift_x),
                               param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(shift_y)),
+                       mask = get("DEP_975") %>% st_transform(3857),
                        r = param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(rotation),
                        k = param_DROM_rapp %>% filter(DEP %in% '975') %>% pull(echelle)) %>%
       st_set_crs(3857) %>%
+      st_transform(2154) %>%
       identity()
   }
 
@@ -154,9 +164,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       f_moveresize_tot(x = . ,
                        xy = c(param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(shift_x),
                               param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(shift_y)),
+                       mask = get("DEP_976") %>% st_transform(3857),
                        r = param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(rotation),
                        k = param_DROM_rapp %>% filter(DEP %in% '976') %>% pull(echelle)) %>%
       st_set_crs(3857) %>%
+      st_transform(2154) %>%
       identity()
   }
 
@@ -167,9 +179,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       f_moveresize_tot(x = . ,
                        xy = c(param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(shift_x),
                               param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(shift_y)),
+                       mask = get("DEP_977") %>% st_transform(3857),
                        r = param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(rotation),
                        k = param_DROM_rapp %>% filter(DEP %in% '977') %>% pull(echelle)) %>%
       st_set_crs(3857) %>%
+      st_transform(2154) %>%
       identity()
   }
 
@@ -180,9 +194,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       f_moveresize_tot(x = . ,
                        xy = c(param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(shift_x),
                               param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(shift_y)),
+                       mask = get("DEP_978") %>% st_transform(3857),
                        r = param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(rotation),
                        k = param_DROM_rapp %>% filter(DEP %in% '978') %>% pull(echelle)) %>%
       st_set_crs(3857) %>%
+      st_transform(2154) %>%
       identity()
   }
 
@@ -193,9 +209,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       f_moveresize_tot(x = . ,
                        xy = c(param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(shift_x),
                               param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(shift_y)),
+                       mask = get("DEP_986") %>% st_transform(3857),
                        r = param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(rotation),
                        k = param_DROM_rapp %>% filter(DEP %in% '986') %>% pull(echelle)) %>%
       st_set_crs(3857) %>%
+      st_transform(2154) %>%
       identity()
   }
 
@@ -206,9 +224,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       f_moveresize_tot(x = . ,
                        xy = c(param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(shift_x),
                               param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(shift_y)),
+                       mask = get("DEP_987") %>% st_transform(3857),
                        r = param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(rotation),
                        k = param_DROM_rapp %>% filter(DEP %in% '987') %>% pull(echelle)) %>%
       st_set_crs(3857) %>%
+      st_transform(2154) %>%
       identity()
   }
 
@@ -219,9 +239,11 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
       f_moveresize_tot(x = . ,
                        xy = c(param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(shift_x),
                               param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(shift_y)),
+                       mask = get("DEP_988") %>% st_transform(3857),
                        r = param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(rotation),
                        k = param_DROM_rapp %>% filter(DEP %in% '988') %>% pull(echelle)) %>%
       st_set_crs(3857) %>%
+      st_transform(2154) %>%
       identity()
   }
 
@@ -231,7 +253,7 @@ transfo_om <- function(shape_origine, var_departement, type_transfo = "v1"){
     shape_FRMET <-
       shape_origine %>%
       filter(!substr(!!sym(var_departement),1,2) %in% c("97","98")) %>%
-      st_transform(3857) %>%
+      st_transform(2154) %>%
       identity()
     # renommage du champ de geometries
     st_geometry(shape_FRMET) <- "geometry"
