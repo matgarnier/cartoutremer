@@ -41,7 +41,7 @@ Les territoires de France d'Outre-Mer inclus sont les suivants :
 
 # Installation :  
   
-```{r eval=T,echo=T, message = F, warning = F}
+```{r eval=F,echo=T, message = F, warning = F}
 remotes::install_github("ARCEP-dev/cartoutremer")
 
 ```
@@ -51,21 +51,28 @@ remotes::install_github("ARCEP-dev/cartoutremer")
 ```{r carto_frmetdrom, eval=T, echo=T, message=F, warning=F , dpi= 500}
 library(cartoutremer)
 
-# import des contours des départements de France métropolitaine et des DROM en projection WGS1984 via l'API IGN 
-library(httr)
-api_ignadmin <- "https://wxs.ign.fr/administratif/geoportail/wfs"
-url <- parse_url(api_ignadmin)
-url$query <- list(service = "wfs",
-                  request = "GetFeature",
-                  srsName = "EPSG:4326",
-                  typename = "ADMINEXPRESS-COG-CARTO.LATEST:departement")
+# import des contours des départements de France métropolitaine et des DROM en projection conventionnelle 
+# et conversion en projection WGS 1984
+# puis agrégation de l'ensemble des départements
 
-DEP_FRMETDROM <- build_url(url) %>% read_sf() %>% select(-gml_id, -insee_reg)
+DEP_FRMETDROM <- DEP_FRMET %>% st_transform(4326) %>%
+  rbind.data.frame(DEP_971 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_972 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_973 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_974 %>% st_transform(4326)) %>%
+  # rbind.data.frame(DEP_975) %>%
+  rbind.data.frame(DEP_976 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_977 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_978 %>% st_transform(4326)) %>%
+  # rbind.data.frame(DEP_986) %>%
+  # rbind.data.frame(DEP_987) %>%
+  # rbind.data.frame(DEP_988) %>%
+  identity()
 
 # transformation des DROM pour les afficher à proximité de la France métropolitaine
 DEP_FRMETDROM.proches <-
   transfo_om(shape_origine = DEP_FRMETDROM,
-             var_departement = "insee_dep",
+             var_departement = "INSEE_DEP",
              type_transfo = "v1")
 
 # cartographie avec ggplot
@@ -76,7 +83,7 @@ ggplot() +
 ```
 
 
-```{r carto_com, eval=T, echo=T, message=F, warning=F , dpi= 500}
+```{r carto_com, eval=F, echo=T, message=F, warning=F , dpi= 500}
 
 # ajout des COM 975/977/978
 
@@ -117,7 +124,7 @@ ggplot() +
 
 # Ajout des cartons
 
-```{r cartons, eval=T, echo=T, message=F, warning=F , dpi= 500}
+```{r cartons, eval=F, echo=T, message=F, warning=F , dpi= 500}
 ggplot() +
   geom_sf(data = DEP_FRMETDROM.proches %>%
                 # agrégation des COM visuellement rapprochés

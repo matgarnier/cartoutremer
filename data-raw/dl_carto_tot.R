@@ -11,20 +11,19 @@ library(rmapshaper)
 
 annee_COG <- 2023
 
-dossier_millesime_ADMINEXPRESS <- paste0(annee_COG,"/admin_express_cog/")
-version_millesime_ADMINEXPRESS <- "ADECOG_3-1"
+dossier_millesime_ADMINEXPRESS <- paste0(annee_COG,"/admin_express_cogcarto/")
+version_millesime_ADMINEXPRESS <- "ADECOGC_3-1"
 
+DEP_FRMET <- st_read(paste0("U:/3-ressources/limites_admin/france/ign/",dossier_millesime_ADMINEXPRESS,version_millesime_ADMINEXPRESS,"_SHP_LAMB93_FXX/DEPARTEMENT.shp")) %>%  st_set_crs(2154) %>% select(INSEE_DEP)
 
 DEP_971 <-  st_read(paste0("U:/3-ressources/limites_admin/france/ign/",dossier_millesime_ADMINEXPRESS,version_millesime_ADMINEXPRESS,"_SHP_RGAF09UTM20_GLP/DEPARTEMENT.shp")) %>%  st_set_crs(5490) %>% select(INSEE_DEP)
 DEP_972 <-  st_read(paste0("U:/3-ressources/limites_admin/france/ign/",dossier_millesime_ADMINEXPRESS,version_millesime_ADMINEXPRESS,"_SHP_RGAF09UTM20_MTQ/DEPARTEMENT.shp")) %>%   st_set_crs(5490) %>% select(INSEE_DEP)
 DEP_973 <-  st_read(paste0("U:/3-ressources/limites_admin/france/ign/",dossier_millesime_ADMINEXPRESS,version_millesime_ADMINEXPRESS,"_SHP_UTM22RGFG95_GUF/DEPARTEMENT.shp")) %>%   st_set_crs(2972) %>% select(INSEE_DEP)
 DEP_974 <-  st_read(paste0("U:/3-ressources/limites_admin/france/ign/",dossier_millesime_ADMINEXPRESS,version_millesime_ADMINEXPRESS,"_SHP_RGR92UTM40S_REU/DEPARTEMENT.shp")) %>%  st_set_crs(2975) %>% select(INSEE_DEP)
 DEP_976 <-  st_read(paste0("U:/3-ressources/limites_admin/france/ign/",dossier_millesime_ADMINEXPRESS,version_millesime_ADMINEXPRESS,"_SHP_RGM04UTM38S_MYT/DEPARTEMENT.shp")) %>%  st_set_crs(4471) %>% select(INSEE_DEP)
-DEP_977 <-  st_read(paste0("U:/3-ressources/limites_admin/france/ign/",dossier_millesime_ADMINEXPRESS,version_millesime_ADMINEXPRESS,"_SHP_RGAF09UTM20_STB-STM/DEPARTEMENT.shp")) %>%  st_set_crs(32620) %>% filter(INSEE_DEP %in% '977') %>% select(INSEE_DEP)
-DEP_978 <-  st_read(paste0("U:/3-ressources/limites_admin/france/ign/",dossier_millesime_ADMINEXPRESS,version_millesime_ADMINEXPRESS,"_SHP_RGAF09UTM20_STB-STM/DEPARTEMENT.shp")) %>%  st_set_crs(32620) %>% filter(INSEE_DEP %in% '978') %>% select(INSEE_DEP)
-
+DEP_977 <-  st_read(paste0("U:/3-ressources/limites_admin/france/ign/","2023/admin_express_cog/","ADECOG_3-1","_SHP_RGAF09UTM20_STB-STM/DEPARTEMENT.shp")) %>%  st_set_crs(32620) %>% filter(INSEE_DEP %in% '977') %>% select(INSEE_DEP)
+DEP_978 <-  st_read(paste0("U:/3-ressources/limites_admin/france/ign/","2023/admin_express_cog/","ADECOG_3-1","_SHP_RGAF09UTM20_STB-STM/DEPARTEMENT.shp")) %>%  st_set_crs(32620) %>% filter(INSEE_DEP %in% '978') %>% select(INSEE_DEP)
 DEP_975 <- st_read("https://static.data.gouv.fr/resources/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/20220506-142220/departement.geojson",quiet = TRUE) %>%  select(INSEE_DEP)
-
 
 dossier_limadmin_autres <- "U:/3-ressources/limites_admin/france/autres/"
 
@@ -82,6 +81,7 @@ DEP_987 <- DEP_PO %>% select(INSEE_DEP)
 DEP_988 <- DEP_NC %>% select(INSEE_DEP)
 
 
+usethis::use_data(DEP_FRMET, overwrite = TRUE)
 usethis::use_data(DEP_971, overwrite = TRUE)
 usethis::use_data(DEP_972, overwrite = TRUE)
 usethis::use_data(DEP_973, overwrite = TRUE)

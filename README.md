@@ -19,19 +19,19 @@ sfdataframe en entrée, le sfdataframe généré par la fonction
 
 Les territoires de France d’Outre-Mer inclus sont les suivants :
 
--   l’ensemble des DROM (Départements et Régions d’outre-mer)
-    -   Guadeloupe (971)
-    -   Martinique (972)
-    -   Guyane (973)
-    -   La Réunion (974)
-    -   Mayotte (976)
--   les COM (Collectivités d’outre-mer) suivantes :
-    -   Saint-Pierre-et-Miquelon (975)
-    -   Saint-Barthélémy (977)
-    -   Saint-Martin (978)
-    -   Wallis-et-Futuna (986)
-    -   Polynésie Française (987)
-    -   Nouvelle-Calédonie (988)
+- l’ensemble des DROM (Départements et Régions d’outre-mer)
+  - Guadeloupe (971)
+  - Martinique (972)
+  - Guyane (973)
+  - La Réunion (974)
+  - Mayotte (976)
+- les COM (Collectivités d’outre-mer) suivantes :
+  - Saint-Pierre-et-Miquelon (975)
+  - Saint-Barthélémy (977)
+  - Saint-Martin (978)
+  - Wallis-et-Futuna (986)
+  - Polynésie Française (987)
+  - Nouvelle-Calédonie (988)
 
 # Installation :
 
@@ -44,21 +44,28 @@ remotes::install_github("ARCEP-dev/cartoutremer")
 ``` r
 library(cartoutremer)
 
-# import des contours des départements de France métropolitaine et des DROM en projection WGS1984 via l'API IGN 
-library(httr)
-api_ignadmin <- "https://wxs.ign.fr/administratif/geoportail/wfs"
-url <- parse_url(api_ignadmin)
-url$query <- list(service = "wfs",
-                  request = "GetFeature",
-                  srsName = "EPSG:4326",
-                  typename = "ADMINEXPRESS-COG-CARTO.LATEST:departement")
+# import des contours des départements de France métropolitaine et des DROM en projection conventionnelle 
+# et conversion en projection WGS 1984
+# puis agrégation de l'ensemble des départements
 
-DEP_FRMETDROM <- build_url(url) %>% read_sf() %>% select(-gml_id, -insee_reg)
+DEP_FRMETDROM <- DEP_FRMET %>% st_transform(4326) %>%
+  rbind.data.frame(DEP_971 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_972 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_973 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_974 %>% st_transform(4326)) %>%
+  # rbind.data.frame(DEP_975) %>%
+  rbind.data.frame(DEP_976 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_977 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_978 %>% st_transform(4326)) %>%
+  # rbind.data.frame(DEP_986) %>%
+  # rbind.data.frame(DEP_987) %>%
+  # rbind.data.frame(DEP_988) %>%
+  identity()
 
 # transformation des DROM pour les afficher à proximité de la France métropolitaine
 DEP_FRMETDROM.proches <-
   transfo_om(shape_origine = DEP_FRMETDROM,
-             var_departement = "insee_dep",
+             var_departement = "INSEE_DEP",
              type_transfo = "v1")
 
 # cartographie avec ggplot
@@ -70,6 +77,7 @@ ggplot() +
 <img src="man/figures/README-carto_frmetdrom-1.png" width="100%" />
 
 ``` r
+
 # ajout des COM 975/977/978
 
 DEP_977_978 <- st_read("https://static.data.gouv.fr/resources/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/20220506-142254/departement.geojson",quiet = TRUE) %>%
@@ -105,8 +113,6 @@ ggplot() +
   coord_sf( datum = NA)
 ```
 
-<img src="man/figures/README-carto_com-1.png" width="100%" />
-
 # Ajout des cartons
 
 ``` r
@@ -139,21 +145,19 @@ ggplot() +
         axis.text = element_blank())
 ```
 
-<img src="man/figures/README-cartons-1.png" width="100%" />
-
 # Ressources annexes :
 
--   Contours des communes de France métropolitaine et DROM en projection
-    WGS1984 mis à disposition par l’Arcep sur
-    [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/contours-communes-france-administrative-format-admin-express-avec-arrondissements/)
+- Contours des communes de France métropolitaine et DROM en projection
+  WGS1984 mis à disposition par l’Arcep sur
+  [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/contours-communes-france-administrative-format-admin-express-avec-arrondissements/)
 
--   Contours des communes des COM (Saint-Pierre-et-Miquelon,
-    Saint-Barthélémy, Saint-Martin) mis à disposition par l’Arcep sur
-    [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/)
+- Contours des communes des COM (Saint-Pierre-et-Miquelon,
+  Saint-Barthélémy, Saint-Martin) mis à disposition par l’Arcep sur
+  [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/)
 
--   Contours des communes de
-    [Wallis-et-Futuna](https://nauru-data.sprep.org/system/files/wallis-et-futuna_0.zip)
-    , de [Polynésie
-    Française](https://static.data.gouv.fr/resources/limites-geographiques-administratives/20220610-202135/shapefiles.zip)
-    et de
-    [Nouvelle-Calédonie](https://data.opendatasoft.com/explore/dataset/communes-nc-limites-terrestres-simplifiees@nouvelle-caledonie/download/?format=shp&timezone=Europe/Berlin&lang=fr).
+- Contours des communes de
+  [Wallis-et-Futuna](https://nauru-data.sprep.org/system/files/wallis-et-futuna_0.zip)
+  , de [Polynésie
+  Française](https://static.data.gouv.fr/resources/limites-geographiques-administratives/20220610-202135/shapefiles.zip)
+  et de
+  [Nouvelle-Calédonie](https://data.opendatasoft.com/explore/dataset/communes-nc-limites-terrestres-simplifiees@nouvelle-caledonie/download/?format=shp&timezone=Europe/Berlin&lang=fr).
