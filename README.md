@@ -6,7 +6,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Le package R `CartOutremer` permet de faciliter la cartographie des
+Le package R `cartoutremer` permet de faciliter la cartographie des
 territoires français d’Outre-Mer (DROM et COM) dans les outils R et
 QGis. Ces territoires sont placés à proximité de la France
 métropolitaine et leur échelle est altérée afin de faciliter la
@@ -53,13 +53,13 @@ DEP_FRMETDROM <- DEP_FRMET %>% st_transform(4326) %>%
   rbind.data.frame(DEP_972 %>% st_transform(4326)) %>%
   rbind.data.frame(DEP_973 %>% st_transform(4326)) %>%
   rbind.data.frame(DEP_974 %>% st_transform(4326)) %>%
-  # rbind.data.frame(DEP_975) %>%
+  rbind.data.frame(DEP_975 %>% st_transform(4326)) %>%
   rbind.data.frame(DEP_976 %>% st_transform(4326)) %>%
   rbind.data.frame(DEP_977 %>% st_transform(4326)) %>%
   rbind.data.frame(DEP_978 %>% st_transform(4326)) %>%
-  # rbind.data.frame(DEP_986) %>%
-  # rbind.data.frame(DEP_987) %>%
-  # rbind.data.frame(DEP_988) %>%
+  rbind.data.frame(DEP_986 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_987 %>% st_transform(4326)) %>%
+  rbind.data.frame(DEP_988 %>% st_transform(4326)) %>%
   identity()
 
 # transformation des DROM pour les afficher à proximité de la France métropolitaine
@@ -76,54 +76,13 @@ ggplot() +
 
 <img src="man/figures/README-carto_frmetdrom-1.png" width="100%" />
 
-``` r
-
-# ajout des COM 975/977/978
-
-DEP_977_978 <- st_read("https://static.data.gouv.fr/resources/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/20220506-142254/departement.geojson",quiet = TRUE) %>%
-  # mise en cohérence des champs
-select(id=ID, nom_m = NOM_DEP, nom = NOM_DEP_M, insee_dep = INSEE_DEP, the_geom = geometry)
-
-DEP_975 <- st_read("https://static.data.gouv.fr/resources/decoupage-administratif-des-com-st-martin-et-st-barthelemy-et-com-saint-pierre-et-miquelon-format-admin-express/20220506-142220/departement.geojson",quiet = TRUE) %>%
-  # mise en cohérence des champs
-select(id=ID, nom_m = NOM_DEP, nom = NOM_DEP_M, insee_dep = INSEE_DEP, the_geom = geometry)
-  
-# transformation des DROM pour les afficher à proximité de la France métropolitaine
-DEP_977_978.proche <-
-  transfo_om(shape_origine = DEP_977_978,
-             var_departement = "insee_dep",
-             type_transfo = "v1")
-# colnames(DEP_977_978.proche)
-DEP_975.proche <-
-  transfo_om(shape_origine = DEP_975,
-             var_departement = "insee_dep",
-             type_transfo = "v1")
-
-# cartographie 
-ggplot() +
-  geom_sf(data = DEP_FRMETDROM.proches,
-          aes(fill = insee_dep),
-          show.legend = FALSE,
-          lwd  = 0) +
-  geom_sf(data = # agrégation des COM visuellement rapprochés
-                DEP_975.proche %>%
-                bind_rows(DEP_977_978.proche),
-          fill = "red",
-          color = NA) +
-  coord_sf( datum = NA)
-```
-
 # Ajout des cartons
 
 ``` r
 ggplot() +
-  geom_sf(data = DEP_FRMETDROM.proches %>%
-                # agrégation des COM visuellement rapprochés
-                bind_rows(DEP_975.proche) %>%
-                bind_rows(DEP_977_978.proche)) +
+  geom_sf(data = DEP_FRMETDROM.proches) +
   # délimitations des zones
   geom_rect(data = param_cadres_om %>%
-              filter(DEP %in% c("971","972","973","974", "975","976", "977", "978")) %>%
               filter(type_rapp %in% "v1"),
               aes(xmin = xmin, xmax = xmax, 
                   ymin = ymin, ymax = ymax, 
@@ -132,7 +91,6 @@ ggplot() +
               stroke = 1) +
   # affichage des étiquettes
     geom_text(data = param_cadres_om %>%
-                filter(DEP %in% c("971","972","973","974", "975","976", "977", "978")) %>%
                 filter(type_rapp %in% "v1"),
                aes(x = xmax-20000, 
                    y = ymax-15000, 
@@ -144,6 +102,8 @@ ggplot() +
   theme(axis.title = element_blank(),
         axis.text = element_blank())
 ```
+
+<img src="man/figures/README-cartons-1.png" width="100%" />
 
 # Ressources annexes :
 
