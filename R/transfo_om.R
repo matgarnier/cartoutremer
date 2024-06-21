@@ -314,10 +314,9 @@ f_moveresize_tot <- function (x, mask = NULL, xy, prj,r, k = 1)
   st_geometry(x) <- xg + xy - st_bbox(xg)[1:2]
   x <- x[-1, ]
 
-  if (cp) {
-    x <- st_cast(x, "MULTIPOLYGON")
-  }
-
+  # if (cp) {
+  #   x <- st_cast(x, "MULTIPOLYGON")
+  # }
 
   st_crs(x) <- prj
   x <- x[, namesorder]
