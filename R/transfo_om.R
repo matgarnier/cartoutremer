@@ -300,7 +300,7 @@ f_moveresize_tot <- function (x, mask = NULL, xy, prj,r, k = 1)
   mask <- st_union(mask)
   if (class(st_geometry(x))[1] == "sfc_POINT") {
     x <- f_moveresize_pt(x = x, mask = mask, xy = xy,
-                         prj = prj, k = k)
+                         prj = prj,r = r, k = k)
     return(x)
   }
   namesorder <- names(x)
@@ -328,7 +328,7 @@ f_moveresize_tot <- function (x, mask = NULL, xy, prj,r, k = 1)
   return(x)
 }
 
-f_moveresize_pt <- function(x, mask, xy, prj, k){
+f_moveresize_pt <- function(x, mask, xy, prj, r, k){
   # names order mngmt
   namesorder <- names(x)
 
